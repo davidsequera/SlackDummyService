@@ -6,7 +6,6 @@ app = Flask(__name__)
 
 
 SLACK_BOT_TOKEN = os.environ.get('SLACK_BOT_TOKEN')
-SLACK_SIGNING_SECRET = os.environ.get('SLACK_SIGNING_SECRET')
 
 def verify_slack_request(req):
     # You can add verification logic here using Slack's signature
