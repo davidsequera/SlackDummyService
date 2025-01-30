@@ -11,8 +11,13 @@ def verify_slack_request(req):
     # You can add verification logic here using Slack's signature
     pass
 
+
+
 @app.route('/slack/events', methods=['POST'])
 def slack_events():
+    # If the request is a challenge request, return the challenge value
+    if 'challenge' in data:
+        return jsonify({'challenge': data['challenge']})
     # Verify request from Slack
     if not verify_slack_request(request):
         return "Unauthorized", 403
