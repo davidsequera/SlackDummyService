@@ -15,6 +15,7 @@ def verify_slack_request(req):
 
 @app.route('/slack/events', methods=['POST'])
 def slack_events():
+    data = request.json
     # If the request is a challenge request, return the challenge value
     if 'challenge' in data:
         return jsonify({'challenge': data['challenge']})
@@ -22,7 +23,6 @@ def slack_events():
     if not verify_slack_request(request):
         return "Unauthorized", 403
 
-    data = request.json
     event = data.get('event', {})
     
     # Check if this is a message event
