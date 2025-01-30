@@ -2,7 +2,7 @@ from flask import Flask, Response
 from slackeventsapi import SlackEventAdapter
 import os
 from threading import Thread
-from slack import WebClient
+from slack_sdk import WebClient
 
 
 # This `app` represents your existing Flask app
