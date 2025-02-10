@@ -1,4 +1,4 @@
-from flask import Flask, Response
+from flask import Flask, Response, jsonify
 from slackeventsapi import SlackEventAdapter
 import os
 from threading import Thread
@@ -26,7 +26,7 @@ def hello():
 
 @app.route("/", methods=['POST'])
 def event_hook():
-    json_dict = json.loads(request.body.decode("utf-8"))
+    json_dict = request.json # json.loads(request.body.decode("utf-8"))
     if json_dict["token"] != VERIFICATION_TOKEN:
         return {"status": 403}
 
