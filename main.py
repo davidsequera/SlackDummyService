@@ -1,4 +1,4 @@
-from flask import Flask, Response, jsonify
+from flask import Flask, Response, request, jsonify
 from slackeventsapi import SlackEventAdapter
 import os
 from threading import Thread
