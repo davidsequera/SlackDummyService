@@ -18,7 +18,13 @@ VERIFICATION_TOKEN = os.environ['VERIFICATION_TOKEN']
 slack_client = WebClient(slack_token)
 
 # An example of one of your Flask app's routes
-@app.route("/")
+
+@app.route("/", methods=['GET'])
+def hello():
+    return "Hello I am Slack Server"
+
+
+@app.route("/", methods=['POST'])
 def event_hook(request):
     json_dict = json.loads(request.body.decode("utf-8"))
     if json_dict["token"] != VERIFICATION_TOKEN:
