@@ -3,7 +3,7 @@ from slackeventsapi import SlackEventAdapter
 import os
 from threading import Thread
 from slack_sdk import WebClient
-
+import random
 
 # This `app` represents your existing Flask app
 app = Flask(__name__)
@@ -17,49 +17,22 @@ VERIFICATION_TOKEN = os.environ['VERIFICATION_TOKEN']
 #instantiating slack client
 slack_client = WebClient(slack_token)
 
-# An example of one of your Flask app's routes
-
-@app.route("/", methods=['GET'])
-def hello():
-    return "Hello I am Slack Server"
-
-
-@app.route("/", methods=['POST'])
-def event_hook():
-    json_dict = request.json # json.loads(request.body.decode("utf-8"))
-    if json_dict["token"] != VERIFICATION_TOKEN:
-        return {"status": 403}
-
-    if "type" in json_dict:
-        if json_dict["type"] == "url_verification":
-            response_dict = {"challenge": json_dict["challenge"]}
-            return response_dict
-    return {"status": 500}
-    return
-
-
 slack_events_adapter = SlackEventAdapter(
     SLACK_SIGNING_SECRET, "/slack/events", app
 )  
 
 
 @slack_events_adapter.on("app_mention")
-def handle_message(event_data):
-    def send_reply(value):
-        event_data = value
-        message = event_data["event"]
-        if message.get("subtype") is None:
-            command = message.get("text")
-            channel_id = message["channel"]
-            if any(item in command.lower() for item in greetings):
-                message = (
-                    "Hello <@%s>! :tada:"
-                    % message["user"]  # noqa
-                )
-                slack_client.chat_postMessage(channel=channel_id, text=message)
-    thread = Thread(target=send_reply, kwargs={"value": event_data})
-    thread.start()
-    return Response(status=200)
+def handle_message(payload):
+    # Get the event data from the payload
+    event = payload.get("event", {}) 
+    channel_id = event.get("channel")
+    return {
+            "channel": channel_id,
+            "blocks": [
+                {"type": "section", "text": {"type": "mrkdwn", "text": "Hello I am bocadillo"}}
+            ],
+        }
 
 
 # Start the server on port 3000
