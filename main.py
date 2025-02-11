@@ -27,12 +27,13 @@ def handle_message(payload):
     # Get the event data from the payload
     event = payload.get("event", {}) 
     channel_id = event.get("channel")
-    return {
+    message = {
             "channel": channel_id,
             "blocks": [
                 {"type": "section", "text": {"type": "mrkdwn", "text": "Hello I am bocadillo"}}
             ],
         }
+    slack_client.chat_postMessage(**message)
 
 
 # Start the server on port 3000
